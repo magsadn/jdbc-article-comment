@@ -2,6 +2,7 @@ package com.magsad.repository;
 
 import com.magsad.config.DBConnection;
 import com.magsad.model.Article;
+import com.magsad.model.Category;
 import com.magsad.model.Type;
 
 import java.sql.*;
@@ -11,6 +12,7 @@ import java.util.List;
 public class ArticleRepository {
     private static final DBConnection dbConnection = new DBConnection();
     private static final CommentRepository commentRepository = new CommentRepository();
+    private static final CategoryRepository categoryRepository = new CategoryRepository();
 
     public List<Article> findAll() {
         List<Article> articleList = new ArrayList<>();
@@ -64,7 +66,8 @@ public class ArticleRepository {
                         new ArrayList<>(),
                         new ArrayList<>()
                 );
-//                article.setCommentList(commentRepository.findByArticle(article));
+                article.setCommentList(commentRepository.findByArticle(article));
+                article.setCategoryList(categoryRepository.findByArticle(article));
                 return article;
             }
         } catch (SQLException throwable) {
@@ -166,6 +169,7 @@ public class ArticleRepository {
                         new ArrayList<>(),
                         new ArrayList<>()
                 );
+
             }
         } catch (SQLException throwable) {
             System.out.println(throwable.getMessage());
@@ -194,25 +198,33 @@ public class ArticleRepository {
     }
 
 
-    public List<Article> findByCategory(int id) {
+    public List<Article> findByCategory(Category category) {
         List<Article> articleList = new ArrayList<>();
-        Array array;
         try (Connection connection = dbConnection.getConnection()) {
-            String sqlQuerySelectAllByDepart = "select * from category_article where category_id=? order by id";
+            String sqlQuerySelectAllByDepart = "select * from category_article ca join articles a on a.id = ca.article_id where ca.category_id=?";
+
             PreparedStatement psSelectAllByDepart = connection.prepareStatement(sqlQuerySelectAllByDepart);
-            psSelectAllByDepart.setInt(1, id);
+            psSelectAllByDepart.setInt(1, category.getId());
             ResultSet resultSet = psSelectAllByDepart.executeQuery();
             while (resultSet.next()) {
-                System.out.println(resultSet.getArray("article_id"));
-                System.out.println("sout");
                 Article a = new Article(
-                        resultSet.getInt("article_id"), null, null, null, null, null, null, null, null, null, null, null
-                );
+                        resultSet.getInt("article_id"),
+                        resultSet.getString("headline"),
+                        resultSet.getString("article_abstract"),
+                        resultSet.getString("main_text"),
+                        resultSet.getDate("date_created").toLocalDate(),
+                        resultSet.getDate("date_amended").toLocalDate(),
+                        resultSet.getString("posted_by"),
+                        resultSet.getBoolean("make_public"),
+                        resultSet.getInt("views"),
+                        findTypeById(resultSet.getInt("type_id")),
+                        new ArrayList<>(),
+                        new ArrayList<>()
+                        );
                 articleList.add(a);
-                articleList.forEach(art -> findById(art.getId()));
-//                    articleList.add(findById(resultSet.getInt("article_id")));
-                return articleList;
             }
+            return articleList;
+
         } catch (SQLException throwable) {
             System.out.println(throwable.getMessage());
         }

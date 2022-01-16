@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Scanner;
 
 public class NewArticle {
@@ -21,22 +20,21 @@ public class NewArticle {
         article.setArticleAbstract(sc.next());
         System.out.print("mainText: ");
         article.setMainText(sc.next());
-        System.out.print("dateCreated: ");
+        System.out.print("dateCreated (example-20220123): ");
         String dateInString1 = sc.next();
         LocalDate date1 = LocalDate.parse(dateInString1, DateTimeFormatter.BASIC_ISO_DATE);
         article.setDateCreated(date1);
-        System.out.print("dateAmended: ");
+        System.out.print("dateAmended (example-20220123): ");
         String dateInString2 = sc.next();
         LocalDate date2 = LocalDate.parse(dateInString2, DateTimeFormatter.BASIC_ISO_DATE);
         article.setDateAmended(date2);
         System.out.print("postedBy: ");
         article.setPostedBy(sc.next());
-        System.out.print("makePublic: ");
+        System.out.print("makePublic (true/false): ");
         article.setMakePublic(sc.nextBoolean());
         System.out.print("views: ");
         article.setViews(sc.nextInt());
-        System.out.print("typeId: ");
-//                article.setType();
+//        setTypeId is in ArticleService.java
         return article;
     }
 }

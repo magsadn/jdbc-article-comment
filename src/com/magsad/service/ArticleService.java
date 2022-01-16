@@ -2,6 +2,7 @@ package com.magsad.service;
 
 import com.magsad.model.Article;
 import com.magsad.repository.ArticleRepository;
+import com.magsad.repository.TypeRepository;
 import com.magsad.util.article.NewArticle;
 import com.magsad.util.article.UpdateArticle;
 
@@ -10,6 +11,7 @@ import java.util.Scanner;
 
 public class ArticleService {
     private static final ArticleRepository articleRepository = new ArticleRepository();
+    public static final TypeRepository typeRepository = new TypeRepository();
     public void getArticle() {
         do {
             System.out.println("\n1.New 2.FindAll 3.FindById 4.Delete 5.Update 0.Exit");
@@ -38,7 +40,12 @@ public class ArticleService {
 
     private static void findAll() {
         List<Article> articleList = articleRepository.findAll();
+        System.out.format("%4s |%20s |%15s |%15s |%12s |%12s |%18s |%10s |%5s |%6s |\n",
+                "Id","HeadLine","ArticleAbstract","MainText","DateCreated","DateAmended","PostedBy","MakePublic","Views","TypeId"
+
+        );
         articleList.forEach(article -> System.out.print(getPrint(article)));
+//        articleList.forEach(article -> System.out.print(article));
     }
 
     private static void findById() {
@@ -46,10 +53,14 @@ public class ArticleService {
         int id = new Scanner(System.in).nextInt();
         Article article = articleRepository.findById(id);
         System.out.println(getPrint(article));
+//        System.out.println(article);
     }
 
     private static void save() {
         Article article = NewArticle.getNewArticle();
+        System.out.print("typeId: ");
+        article.setType(typeRepository.findById(new Scanner(System.in).nextInt()));
+//        article.setCategoryList();
         System.out.println(articleRepository.save(article));
     }
 
@@ -71,7 +82,7 @@ public class ArticleService {
     }
 
     private static String getPrint(Article art) {
-        return String.format("%4d | %20s |%20s |%20s |%10s |%10s |%20s |%5b |%4d |%4d |\n",
+        return String.format("%4d |%20s |%15s |%15s |%12s |%12s |%18s |%10b |%5d |%6d |\n",
                 art.getId(),
                 art.getHeadline(),
                 art.getArticleAbstract(),

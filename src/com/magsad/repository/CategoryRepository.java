@@ -1,6 +1,7 @@
 package com.magsad.repository;
 
 import com.magsad.config.DBConnection;
+import com.magsad.model.Article;
 import com.magsad.model.Category;
 
 import java.sql.*;
@@ -43,7 +44,7 @@ public class CategoryRepository {
                         resultSet.getString("name"),
                         new ArrayList<>()
                 );
-//                category.setArticleList(articleRepository.findByCategory(category));
+                category.setArticleList(articleRepository.findByCategory(category));
                 return category;
             }
         } catch (SQLException throwable) {
@@ -104,5 +105,30 @@ public class CategoryRepository {
             System.out.println(throwable.getMessage());
         }
         return queryResult;
+    }
+
+    public List<Category> findByArticle(Article article) {
+        List<Category> categoryList = new ArrayList<>();
+        try (Connection connection = dbConnection.getConnection()) {
+            String sqlQuerySelectAllByDepart =  "select * from category_article ca\n" +
+                                                "join categories c on c.id = ca.category_id\n" +
+                                                "where ca.article_id=?";
+
+            PreparedStatement psSelectAllByDepart = connection.prepareStatement(sqlQuerySelectAllByDepart);
+            psSelectAllByDepart.setInt(1, article.getId());
+            ResultSet resultSet = psSelectAllByDepart.executeQuery();
+            while (resultSet.next()) {
+                Category category = new Category(
+                        resultSet.getInt("category_id"),
+                        resultSet.getString("name"),
+                        new ArrayList<>()
+                );
+                categoryList.add(category);
+            }
+            return categoryList;
+        } catch (SQLException throwable) {
+            System.out.println(throwable.getMessage());
+        }
+        return null;
     }
 }

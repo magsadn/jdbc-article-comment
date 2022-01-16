@@ -1,30 +1,29 @@
 package com.magsad.util.article;
 import com.magsad.model.Article;
+import com.magsad.repository.TypeRepository;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class UpdateArticle {
+    private static final TypeRepository typeRepository = new TypeRepository();
     public static Article updateArticle(Article article) {
         do {
             System.out.println(" 1.Headline 2.ArticleAbstract 3.MainText 4.DateCreated 5.DateAmended 6.PostedBy 7.MakePublic 8.Views 9.TypeId  0.Exit");
-            System.out.print("Enter Update/select: ");
+            System.out.print("Enter Article/Update select: ");
             Scanner sc = new Scanner(System.in);
             int select = sc.nextInt();
             if (select == 9) {
                 System.out.print("typeId: ");
-//                article.setType();
+                article.setType(typeRepository.findById(sc.nextInt()));
             }
             if (select == 8) {
                 System.out.print("views: ");
                 article.setViews(sc.nextInt());
             }
             if (select == 7) {
-                System.out.print("makePublic: ");
+                System.out.print("makePublic (true/false): ");
                 article.setMakePublic(sc.nextBoolean());
             }
             if (select == 6) {
@@ -32,12 +31,12 @@ public class UpdateArticle {
                 article.setPostedBy(sc.next());
             }
             if (select == 5) {
-                System.out.print("dateAmended: ");
+                System.out.print("dateAmended (example-20220123): ");
                 String dateInString2 = sc.next();
                 LocalDate date2 = LocalDate.parse(dateInString2, DateTimeFormatter.BASIC_ISO_DATE);
             }
             if (select == 4) {
-                System.out.print("dateCreated: ");
+                System.out.print("dateCreated (example-20220123): ");
                 String dateInString1 = sc.next();
                 LocalDate date1 = LocalDate.parse(dateInString1, DateTimeFormatter.BASIC_ISO_DATE);
             }

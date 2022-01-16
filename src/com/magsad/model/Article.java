@@ -2,6 +2,7 @@ package com.magsad.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Article {
     private Integer id;
@@ -131,5 +132,36 @@ public class Article {
 
     public void setCategoryList(List<Category> categoryList) {
         this.categoryList = categoryList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(id, article.id) && Objects.equals(headline, article.headline) && Objects.equals(articleAbstract, article.articleAbstract) && Objects.equals(mainText, article.mainText) && Objects.equals(dateCreated, article.dateCreated) && Objects.equals(dateAmended, article.dateAmended) && Objects.equals(postedBy, article.postedBy) && Objects.equals(makePublic, article.makePublic) && Objects.equals(views, article.views) && Objects.equals(type, article.type) && Objects.equals(commentList, article.commentList) && Objects.equals(categoryList, article.categoryList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, headline, articleAbstract, mainText, dateCreated, dateAmended, postedBy, makePublic, views, type, commentList, categoryList);
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", headline='" + headline + '\'' +
+                ", articleAbstract='" + articleAbstract + '\'' +
+                ", mainText='" + mainText + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", dateAmended=" + dateAmended +
+                ", postedBy='" + postedBy + '\'' +
+                ", makePublic=" + makePublic +
+                ", views=" + views +
+                ", typeId=" + type.getId() +
+                ", commentList=" + commentList +
+                ", categoryList=" + categoryList +
+                '}';
     }
 }

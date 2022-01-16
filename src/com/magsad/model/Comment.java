@@ -1,5 +1,6 @@
 package com.magsad.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,13 +9,13 @@ public class Comment {
     private String name;
     private String email;
     private String text;
-    private Date datePosted;
+    private LocalDate datePosted;
     private Boolean isReply;
     private Boolean publish;
 
     private Article article;
 
-    public Comment(Integer id, String name, String email, String text, Date datePosted, Boolean isReply, Boolean publish, Article article) {
+    public Comment(Integer id, String name, String email, String text, LocalDate datePosted, Boolean isReply, Boolean publish, Article article) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -60,11 +61,11 @@ public class Comment {
         this.text = text;
     }
 
-    public Date getDatePosted() {
+    public LocalDate getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(Date datePosted) {
+    public void setDatePosted(LocalDate datePosted) {
         this.datePosted = datePosted;
     }
 
@@ -115,7 +116,7 @@ public class Comment {
                 ", datePosted=" + datePosted +
                 ", isReply=" + isReply +
                 ", publish=" + publish +
-                ", article=" + article +
+                ", articleId=" + article.getId() +
                 '}';
     }
 }

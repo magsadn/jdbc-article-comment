@@ -24,7 +24,7 @@ public class CommentRepository {
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("text"),
-                        resultSet.getDate("date_posted"),
+                        resultSet.getDate("date_posted").toLocalDate(),
                         resultSet.getBoolean("is_reply"),
                         resultSet.getBoolean("publish"),
                         findArticleById(resultSet.getInt("article_id"))
@@ -50,7 +50,7 @@ public class CommentRepository {
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("text"),
-                        resultSet.getDate("date_posted"),
+                        resultSet.getDate("date_posted").toLocalDate(),
                         resultSet.getBoolean("is_reply"),
                         resultSet.getBoolean("publish"),
                         findArticleById(resultSet.getInt("article_id"))
@@ -72,7 +72,7 @@ public class CommentRepository {
             psInsert.setString(2, comment.getName());
             psInsert.setString(3, comment.getEmail());
             psInsert.setString(4, comment.getText());
-            psInsert.setDate(5, (Date) comment.getDatePosted());
+            psInsert.setDate(5, Date.valueOf(comment.getDatePosted()));
             psInsert.setBoolean(6, comment.getReply());
             psInsert.setInt(7, comment.getArticle().getId());
 
@@ -95,7 +95,7 @@ public class CommentRepository {
             psUpdate.setString(1, comment.getName());
             psUpdate.setString(2, comment.getEmail());
             psUpdate.setString(3, comment.getText());
-            psUpdate.setDate(4, (Date) comment.getDatePosted());
+            psUpdate.setDate(4, Date.valueOf(comment.getDatePosted()));
             psUpdate.setBoolean(5, comment.getReply());
             psUpdate.setBoolean(6, comment.getPublish());
             psUpdate.setInt(7, comment.getArticle().getId());
@@ -142,15 +142,15 @@ public class CommentRepository {
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("text"),
-                        resultSet.getDate("date_posted"),
+                        resultSet.getDate("date_posted").toLocalDate(),
                         resultSet.getBoolean("is_reply"),
                         resultSet.getBoolean("publish"),
                         findArticleById(resultSet.getInt("article_id"))
 //                        articleRepository.findById(resultSet.getInt("article_id"))
                         );
                         commentList.add(c);
-                return commentList;
             }
+            return commentList;
         }catch (SQLException throwable){
             System.out.println(throwable.getMessage());
         }
